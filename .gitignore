@@ -1,0 +1,21 @@
+# Arquivos de configuração local
+CLAUDE.md
+TASKS.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Ambientes virtuais
+venv/
+.env/
+
+# IDEs
+.vscode/
+.idea/
