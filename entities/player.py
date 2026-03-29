@@ -9,6 +9,7 @@ from settings import (
     JOGADOR_COR, JOGADOR_LARGURA, JOGADOR_ALTURA,
 )
 from entities.bullet import BalaJogador
+from assets.loader import carregar_imagem
 
 
 class Jogador(pygame.sprite.Sprite):
@@ -28,16 +29,18 @@ class Jogador(pygame.sprite.Sprite):
 
     # ------------------------------------------------------------------
     def _criar_sprite(self):
-        """Desenha o avião como forma geométrica (fallback sem imagem)."""
+        """Carrega sprite do jogador ou usa forma geométrica como fallback."""
+        imagem = carregar_imagem("assets/images/player.png", JOGADOR_LARGURA, JOGADOR_ALTURA)
+        if imagem:
+            return imagem
+        # Fallback geométrico
         surf = pygame.Surface((JOGADOR_LARGURA, JOGADOR_ALTURA), pygame.SRCALPHA)
-        # Corpo central
         pygame.draw.polygon(surf, JOGADOR_COR, [
             (JOGADOR_LARGURA // 2, 0),
             (JOGADOR_LARGURA,      JOGADOR_ALTURA),
             (JOGADOR_LARGURA // 2, JOGADOR_ALTURA - 10),
             (0,                    JOGADOR_ALTURA),
         ])
-        # Detalhe da cabine
         pygame.draw.circle(surf, (200, 230, 255),
                            (JOGADOR_LARGURA // 2, JOGADOR_ALTURA // 3), 6)
         return surf
