@@ -11,6 +11,7 @@ from entities.player import Jogador
 from managers.collision_manager import GerenciadorColisao
 from managers.wave_manager import GerenciadorOndas
 from ui.hud import HUD
+from assets.loader import carregar_imagem
 
 
 class GameCena:
@@ -44,6 +45,13 @@ class GameCena:
         self._pausado = False
         self._fonte_pausa = pygame.font.SysFont("arial", 40, bold=True)
 
+        # Fundo com scroll vertical
+        fundo = carregar_imagem("assets/images/background.png", LARGURA, ALTURA)
+        self._fundo = fundo
+        self._fundo_y1 = 0
+        self._fundo_y2 = -ALTURA
+        self._fundo_velocidade = 1
+
     # ------------------------------------------------------------------
     def atualizar(self, dt, eventos):
         for evento in eventos:
@@ -55,6 +63,8 @@ class GameCena:
 
         if self._pausado:
             return None
+
+        self._atualizar_fundo()
 
         # Atualiza entidades
         self._jogador.update(dt, eventos, self.grupo_balas_jogador)
@@ -77,6 +87,14 @@ class GameCena:
 
         return None
 
+    def _atualizar_fundo(self):
+        self._fundo_y1 += self._fundo_velocidade
+        self._fundo_y2 += self._fundo_velocidade
+        if self._fundo_y1 >= ALTURA:
+            self._fundo_y1 = -ALTURA
+        if self._fundo_y2 >= ALTURA:
+            self._fundo_y2 = -ALTURA
+
     def desenhar(self):
         self.tela.fill(AZUL_CEU)
         self._desenhar_fundo()
@@ -98,13 +116,17 @@ class GameCena:
             self._desenhar_pausa()
 
     def _desenhar_fundo(self):
-        """Linhas verticais simulando movimento do céu."""
-        import random
-        rng = random.Random(42)
-        for _ in range(40):
-            x = rng.randint(0, LARGURA)
-            y = rng.randint(0, ALTURA)
-            pygame.draw.circle(self.tela, (60, 90, 150), (x, y), 1)
+        """Desenha fundo com scroll vertical — usa imagem ou fallback de pontos."""
+        if self._fundo:
+            self.tela.blit(self._fundo, (0, self._fundo_y1))
+            self.tela.blit(self._fundo, (0, self._fundo_y2))
+        else:
+            import random
+            rng = random.Random(42)
+            for _ in range(40):
+                x = rng.randint(0, LARGURA)
+                y = rng.randint(0, ALTURA)
+                pygame.draw.circle(self.tela, (60, 90, 150), (x, y), 1)
 
     def _desenhar_pausa(self):
         overlay = pygame.Surface((LARGURA, ALTURA), pygame.SRCALPHA)
