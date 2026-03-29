@@ -4,6 +4,7 @@ Gerenciador de colisões entre os grupos de sprites do jogo.
 
 import pygame
 from entities.explosion import Explosao
+from assets.loader import carregar_som
 
 
 class GerenciadorColisao:
@@ -14,6 +15,7 @@ class GerenciadorColisao:
         self.balas_jogador = balas_jogador
         self.balas_inimigas = balas_inimigas
         self.explosoes = explosoes
+        self._som_explosao = carregar_som("assets/sounds/explosion.ogg")
 
     # ------------------------------------------------------------------
     def processar(self):
@@ -36,6 +38,9 @@ class GerenciadorColisao:
                 explosao = Explosao(inimigo.rect.centerx, inimigo.rect.centery)
                 self.explosoes.add(explosao)
                 pontos += inimigo.pontos
+                if self._som_explosao:
+                    self._som_explosao.set_volume(0.5)
+                    self._som_explosao.play()
         return pontos
 
     def _balas_inimigas_vs_jogador(self):
