@@ -12,6 +12,7 @@ from settings import (
     PONTOS_INIMIGO,
 )
 from entities.bullet import BalaInimigo
+from assets.loader import carregar_imagem
 
 
 class Inimigo(pygame.sprite.Sprite):
@@ -31,15 +32,18 @@ class Inimigo(pygame.sprite.Sprite):
 
     # ------------------------------------------------------------------
     def _criar_sprite(self):
-        """Desenha o inimigo como forma geométrica (fallback sem imagem)."""
+        """Carrega sprite do inimigo ou usa forma geométrica como fallback."""
+        imagem = carregar_imagem("assets/images/enemy.png", INIMIGO_LARGURA, INIMIGO_ALTURA)
+        if imagem:
+            # Inimigos descem pela tela — rotaciona 180° para apontar para baixo
+            return pygame.transform.rotate(imagem, 180)
+        # Fallback geométrico
         surf = pygame.Surface((INIMIGO_LARGURA, INIMIGO_ALTURA), pygame.SRCALPHA)
-        # Corpo — triângulo invertido
         pygame.draw.polygon(surf, INIMIGO_COR, [
             (INIMIGO_LARGURA // 2, INIMIGO_ALTURA),
             (INIMIGO_LARGURA,      0),
             (0,                    0),
         ])
-        # Detalhe da cabine
         pygame.draw.circle(surf, (255, 180, 180),
                            (INIMIGO_LARGURA // 2, INIMIGO_ALTURA // 3), 5)
         return surf
