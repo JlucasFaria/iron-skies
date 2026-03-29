@@ -7,6 +7,7 @@ from settings import (
     LARGURA, ALTURA,
     JOGADOR_VELOCIDADE, JOGADOR_VIDAS, JOGADOR_CADENCIA,
     JOGADOR_COR, JOGADOR_LARGURA, JOGADOR_ALTURA,
+    POWERUP_DURACAO,
 )
 from entities.bullet import BalaJogador
 from assets.loader import carregar_imagem, carregar_som
@@ -27,6 +28,8 @@ class Jogador(pygame.sprite.Sprite):
         self._tempo_invencivel = 0
         self._duracao_invencivel = 1500  # ms
         self._som_tiro = carregar_som("assets/sounds/shoot.ogg")
+        self.tiro_duplo = False
+        self._tiro_duplo_fim = 0
 
     # ------------------------------------------------------------------
     def _criar_sprite(self):
@@ -52,6 +55,7 @@ class Jogador(pygame.sprite.Sprite):
         self._mover(teclas)
         self._verificar_tiro(teclas, dt, grupo_balas)
         self._atualizar_invencibilidade(dt)
+        self._atualizar_tiro_duplo()
 
     def _mover(self, teclas):
         if teclas[pygame.K_LEFT]  and self.rect.left > 0:
@@ -67,12 +71,24 @@ class Jogador(pygame.sprite.Sprite):
         agora = pygame.time.get_ticks()
         if teclas[pygame.K_SPACE]:
             if agora - self._ultimo_tiro >= JOGADOR_CADENCIA:
-                bala = BalaJogador(self.rect.centerx, self.rect.top)
-                grupo_balas.add(bala)
+                if self.tiro_duplo:
+                    # Dois projéteis lado a lado
+                    grupo_balas.add(BalaJogador(self.rect.centerx - 10, self.rect.top))
+                    grupo_balas.add(BalaJogador(self.rect.centerx + 10, self.rect.top))
+                else:
+                    grupo_balas.add(BalaJogador(self.rect.centerx, self.rect.top))
                 self._ultimo_tiro = agora
                 if self._som_tiro:
                     self._som_tiro.set_volume(0.3)
                     self._som_tiro.play()
+
+    def _atualizar_tiro_duplo(self):
+        if self.tiro_duplo and pygame.time.get_ticks() >= self._tiro_duplo_fim:
+            self.tiro_duplo = False
+
+    def ativar_tiro_duplo(self):
+        self.tiro_duplo = True
+        self._tiro_duplo_fim = pygame.time.get_ticks() + POWERUP_DURACAO
 
     def _atualizar_invencibilidade(self, dt):
         if self.invencivel:

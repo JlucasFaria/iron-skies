@@ -56,6 +56,12 @@ INIMIGOS_POR_ONDA_BASE   = 6
 INIMIGOS_POR_ONDA_EXTRA  = 2   # acrescenta por onda
 INTERVALO_SPAWN          = 1000 # ms entre spawns dentro da onda
 
+# --- Power-up ---
+POWERUP_COR           = (80, 255, 180)
+POWERUP_VELOCIDADE    = 2
+POWERUP_CHANCE        = 0.25        # probabilidade de drop ao matar inimigo
+POWERUP_DURACAO       = 8000        # ms com tiro duplo ativo
+
 # --- Cenas ---
 CENA_MENU      = "menu"
 CENA_JOGO      = "jogo"
