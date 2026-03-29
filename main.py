@@ -9,6 +9,12 @@ from settings import LARGURA, ALTURA, FPS, TITULO, CENA_MENU, CENA_JOGO, CENA_GA
 
 def main():
     pygame.init()
+    # Inicializa o mixer de som separadamente — jogo funciona sem ele
+    try:
+        pygame.mixer.init()
+    except pygame.error:
+        pass
+
     pygame.display.set_caption(TITULO)
     tela = pygame.display.set_mode((LARGURA, ALTURA))
     relogio = pygame.time.Clock()
