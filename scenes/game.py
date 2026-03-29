@@ -114,6 +114,7 @@ class GameCena:
             self.estado["pontuacao"],
             self._jogador.vidas,
             self.estado["onda"],
+            self._jogador.tiro_duplo,
         )
 
         if self._pausado:

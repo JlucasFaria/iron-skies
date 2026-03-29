@@ -3,7 +3,7 @@ HUD exibido durante o jogo: pontuação, vidas e número da onda.
 """
 
 import pygame
-from settings import BRANCO, AMARELO, VERMELHO, LARGURA, JOGADOR_COR
+from settings import BRANCO, AMARELO, VERMELHO, LARGURA, JOGADOR_COR, POWERUP_COR
 
 
 class HUD:
@@ -13,10 +13,12 @@ class HUD:
         self._fonte_onda   = pygame.font.SysFont("arial", 18)
 
     # ------------------------------------------------------------------
-    def desenhar(self, tela, pontuacao, vidas, onda):
+    def desenhar(self, tela, pontuacao, vidas, onda, tiro_duplo=False):
         self._desenhar_pontuacao(tela, pontuacao)
         self._desenhar_vidas(tela, vidas)
         self._desenhar_onda(tela, onda)
+        if tiro_duplo:
+            self._desenhar_tiro_duplo(tela)
 
     # ------------------------------------------------------------------
     def _desenhar_pontuacao(self, tela, pontuacao):
@@ -41,3 +43,7 @@ class HUD:
     def _desenhar_onda(self, tela, onda):
         texto = self._fonte_onda.render(f"ONDA: {onda}", True, BRANCO)
         tela.blit(texto, (LARGURA - texto.get_width() - 10, 10))
+
+    def _desenhar_tiro_duplo(self, tela):
+        texto = self._fonte_onda.render("★ TIRO DUPLO", True, POWERUP_COR)
+        tela.blit(texto, (LARGURA - texto.get_width() - 10, 32))
