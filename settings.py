@@ -57,10 +57,18 @@ INIMIGOS_POR_ONDA_EXTRA  = 2   # acrescenta por onda
 INTERVALO_SPAWN          = 1000 # ms entre spawns dentro da onda
 
 # --- Power-up ---
-POWERUP_COR           = (80, 255, 180)
-POWERUP_VELOCIDADE    = 2
-POWERUP_CHANCE        = 0.25        # probabilidade de drop ao matar inimigo
-POWERUP_DURACAO       = 8000        # ms com tiro duplo ativo
+POWERUP_COR_TIRO_DUPLO  = (80, 255, 180)   # verde-água
+POWERUP_COR_RICOCHETE   = (255, 165, 0)    # laranja
+POWERUP_COR_VIDA        = (255, 80, 120)   # rosa
+POWERUP_VELOCIDADE      = 2
+POWERUP_CHANCE_ARMA     = 0.25   # chance de dropar power-up de arma
+POWERUP_CHANCE_VIDA     = 0.10   # chance de dropar vida (independente da arma)
+POWERUP_DURACAO         = 8000   # ms de duração dos power-ups de arma
+
+# Bala ricochete
+BALA_RICOCHETE_COR      = (255, 210, 60)
+BALA_RICOCHETE_VEL_X    = 4      # velocidade horizontal inicial
+BALA_RICOCHETE_BOUNCES  = 3      # número máximo de ricochetes nas bordas
 
 # --- Cenas ---
 CENA_MENU      = "menu"
