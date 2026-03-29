@@ -9,7 +9,7 @@ from settings import (
     JOGADOR_COR, JOGADOR_LARGURA, JOGADOR_ALTURA,
 )
 from entities.bullet import BalaJogador
-from assets.loader import carregar_imagem
+from assets.loader import carregar_imagem, carregar_som
 
 
 class Jogador(pygame.sprite.Sprite):
@@ -26,6 +26,7 @@ class Jogador(pygame.sprite.Sprite):
         self.invencivel = False     # pisca após levar dano
         self._tempo_invencivel = 0
         self._duracao_invencivel = 1500  # ms
+        self._som_tiro = carregar_som("assets/sounds/shoot.ogg")
 
     # ------------------------------------------------------------------
     def _criar_sprite(self):
@@ -69,6 +70,9 @@ class Jogador(pygame.sprite.Sprite):
                 bala = BalaJogador(self.rect.centerx, self.rect.top)
                 grupo_balas.add(bala)
                 self._ultimo_tiro = agora
+                if self._som_tiro:
+                    self._som_tiro.set_volume(0.3)
+                    self._som_tiro.play()
 
     def _atualizar_invencibilidade(self, dt):
         if self.invencivel:
