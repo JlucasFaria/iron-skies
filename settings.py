@@ -18,7 +18,7 @@ AMARELO     = (255, 220, 0)
 LARANJA     = (255, 140, 0)
 
 # --- Jogador ---
-JOGADOR_VELOCIDADE    = 5
+JOGADOR_VELOCIDADE    = 7
 JOGADOR_VIDAS         = 3
 JOGADOR_CADENCIA      = 250   # milissegundos entre tiros
 JOGADOR_COR           = (80,  160, 255)
