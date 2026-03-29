@@ -26,6 +26,7 @@ class GameCena:
         self.grupo_balas_jogador  = pygame.sprite.Group()
         self.grupo_balas_inimigas = pygame.sprite.Group()
         self.grupo_explosoes      = pygame.sprite.Group()
+        self.grupo_powerups       = pygame.sprite.Group()
 
         # Jogador
         self._jogador = Jogador()
@@ -38,6 +39,7 @@ class GameCena:
             self.grupo_balas_jogador,
             self.grupo_balas_inimigas,
             self.grupo_explosoes,
+            self.grupo_powerups,
         )
         self._ondas = GerenciadorOndas(self.grupo_inimigos, self.grupo_balas_inimigas)
 
@@ -72,6 +74,7 @@ class GameCena:
         self.grupo_balas_jogador.update()
         self.grupo_balas_inimigas.update()
         self.grupo_explosoes.update()
+        self.grupo_powerups.update()
 
         # Gerenciadores
         self._ondas.atualizar(dt)
@@ -104,6 +107,7 @@ class GameCena:
         self.grupo_inimigos.draw(self.tela)
         self.grupo_jogador.draw(self.tela)
         self.grupo_explosoes.draw(self.tela)
+        self.grupo_powerups.draw(self.tela)
 
         self._hud.desenhar(
             self.tela,
