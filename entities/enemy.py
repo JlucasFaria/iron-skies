@@ -25,6 +25,9 @@ class Inimigo(pygame.sprite.Sprite):
         self.velocidade = INIMIGO_VELOCIDADE_BASE + velocidade_extra
         self.pontos = PONTOS_INIMIGO
 
+        # Movimento lateral (zigzag)
+        self._vel_x = random.choice([-1, 1]) * random.uniform(0.8, 1.6)
+
         # Temporizador de tiro aleatório
         self._proximo_tiro = pygame.time.get_ticks() + random.randint(
             INIMIGO_CADENCIA_MIN, INIMIGO_CADENCIA_MAX
@@ -51,6 +54,15 @@ class Inimigo(pygame.sprite.Sprite):
     # ------------------------------------------------------------------
     def update(self, dt, grupo_balas_inimigas):
         self.rect.y += self.velocidade
+
+        # Movimento lateral com rebote nas bordas
+        self.rect.x += self._vel_x
+        if self.rect.left <= 0:
+            self.rect.left = 0
+            self._vel_x = abs(self._vel_x)
+        elif self.rect.right >= LARGURA:
+            self.rect.right = LARGURA
+            self._vel_x = -abs(self._vel_x)
 
         # Remove ao sair da tela pela parte inferior
         if self.rect.top > ALTURA:
