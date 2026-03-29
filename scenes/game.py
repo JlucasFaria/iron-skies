@@ -8,7 +8,6 @@ from settings import (
     CENA_MENU, CENA_GAME_OVER,
 )
 from entities.player import Jogador
-from entities.explosion import Explosao
 from managers.collision_manager import GerenciadorColisao
 from managers.wave_manager import GerenciadorOndas
 from ui.hud import HUD
@@ -26,12 +25,10 @@ class GameCena:
         self.grupo_balas_jogador  = pygame.sprite.Group()
         self.grupo_balas_inimigas = pygame.sprite.Group()
         self.grupo_explosoes      = pygame.sprite.Group()
-        self.todos_sprites        = pygame.sprite.Group()
 
         # Jogador
         self._jogador = Jogador()
         self.grupo_jogador.add(self._jogador)
-        self.todos_sprites.add(self._jogador)
 
         # Gerenciadores
         self._colisao = GerenciadorColisao(
@@ -52,9 +49,9 @@ class GameCena:
         for evento in eventos:
             if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
                 if self._pausado:
-                    self._pausado = False
+                    return CENA_MENU   # segundo ESC: volta ao menu
                 else:
-                    return CENA_MENU
+                    self._pausado = True  # primeiro ESC: pausa o jogo
 
         if self._pausado:
             return None
@@ -65,9 +62,6 @@ class GameCena:
         self.grupo_balas_jogador.update()
         self.grupo_balas_inimigas.update()
         self.grupo_explosoes.update()
-
-        # Sincroniza sprites novos com o grupo geral
-        self._sincronizar_todos_sprites()
 
         # Gerenciadores
         self._ondas.atualizar(dt)
@@ -102,16 +96,6 @@ class GameCena:
 
         if self._pausado:
             self._desenhar_pausa()
-
-    # ------------------------------------------------------------------
-    def _sincronizar_todos_sprites(self):
-        """Garante que balas e explosões novas apareçam no grupo geral."""
-        self.todos_sprites.add(
-            *self.grupo_balas_jogador,
-            *self.grupo_balas_inimigas,
-            *self.grupo_inimigos,
-            *self.grupo_explosoes,
-        )
 
     def _desenhar_fundo(self):
         """Linhas verticais simulando movimento do céu."""
