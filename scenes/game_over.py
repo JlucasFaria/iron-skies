@@ -8,6 +8,7 @@ from settings import (
     CENA_JOGO, CENA_MENU,
 )
 from ui.button import Botao
+from assets.loader import carregar_som
 
 
 class GameOverCena:
@@ -29,6 +30,12 @@ class GameOverCena:
                                     cor_texto=BRANCO)
 
         self._proxima_cena = None
+
+        # Toca som de derrota ao entrar na cena
+        som = carregar_som("assets/sounds/game_over.ogg")
+        if som:
+            som.set_volume(0.6)
+            som.play()
 
     # ------------------------------------------------------------------
     def atualizar(self, dt, eventos):
